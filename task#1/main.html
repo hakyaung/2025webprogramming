@@ -1,0 +1,1336 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>정하경 - AI소프트웨어학과</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Orbitron", "Helvetica Neue", Arial, sans-serif;
+        background: #0a0a16;
+        color: #e0e0ff;
+        line-height: 1.6;
+        overflow-x: hidden;
+      }
+
+      /* 별 배경 효과 */
+      .stars {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -2;
+        background: radial-gradient(
+          ellipse at center,
+          #0a0a16 0%,
+          #000000 100%
+        );
+      }
+
+      .star {
+        position: absolute;
+        background-color: white;
+        border-radius: 50%;
+        animation: twinkle 5s infinite;
+      }
+
+      @keyframes twinkle {
+        0%,
+        100% {
+          opacity: 0.2;
+        }
+        50% {
+          opacity: 1;
+        }
+      }
+
+      /* 초상화 배경 애니메이션 - 수정됨 */
+      .portrait-background {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        overflow: hidden;
+        pointer-events: none;
+      }
+
+      .portrait-row {
+        display: flex;
+        width: max-content;
+        animation: slideLeft 40s linear infinite;
+        margin-bottom: 100px;
+      }
+
+      .portrait-row:nth-child(even) {
+        animation-direction: reverse;
+        margin-left: -200px;
+      }
+
+      .portrait {
+        width: 120px;
+        height: 120px;
+        margin: 0 30px;
+        border-radius: 50%;
+        background: linear-gradient(
+          135deg,
+          rgba(90, 70, 255, 0.2),
+          rgba(255, 107, 157, 0.2)
+        );
+        border: 2px solid rgba(90, 70, 255, 0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2.5rem;
+        opacity: 0.3;
+        filter: blur(1px);
+        transform: scale(0.9);
+        transition: all 0.3s ease;
+      }
+
+      .portrait:hover {
+        opacity: 0.6;
+        transform: scale(1);
+        filter: blur(0);
+      }
+
+      @keyframes slideLeft {
+        0% {
+          transform: translateX(0);
+        }
+        100% {
+          transform: translateX(-50%);
+        }
+      }
+
+      /* 헤더 */
+      .header {
+        background: rgba(10, 10, 22, 0.8);
+        backdrop-filter: blur(10px);
+        padding: 20px 0;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        border-bottom: 1px solid rgba(90, 70, 255, 0.3);
+      }
+
+      .header-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 40px;
+        text-align: center;
+      }
+
+      .header h1 {
+        color: #5a46ff;
+        font-size: 1.8rem;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        text-shadow: 0 0 10px rgba(90, 70, 255, 0.7);
+      }
+
+      /* 네비게이션 */
+      nav {
+        background: rgba(15, 15, 30, 0.9);
+        padding: 15px 0;
+        border-bottom: 1px solid rgba(90, 70, 255, 0.3);
+        backdrop-filter: blur(10px);
+      }
+
+      .nav-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 40px;
+        display: flex;
+        justify-content: center;
+      }
+
+      .nav-menu {
+        display: flex;
+        list-style: none;
+        gap: 40px;
+      }
+
+      .nav-menu a {
+        color: #a0a0ff;
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        padding: 8px 16px;
+        border-radius: 20px;
+      }
+
+      .nav-menu a:hover {
+        color: #5a46ff;
+        background: rgba(90, 70, 255, 0.1);
+        box-shadow: 0 0 10px rgba(90, 70, 255, 0.3);
+      }
+
+      .annotation {
+        background: #5a46ff;
+      }
+
+      .annotation a {
+        color: white;
+        text-decoration: none;
+      }
+
+      /* 메인 배너 */
+      .main-banner {
+        background: linear-gradient(135deg, #0a0a16 0%, #1a1a3a 100%);
+        padding: 180px 40px;
+        text-align: center;
+        color: white;
+        position: relative;
+        overflow: hidden;
+        border-bottom: 1px solid rgba(90, 70, 255, 0.3);
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .banner-bg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="rgba(90,70,255,0.1)"/><circle cx="75" cy="75" r="1" fill="rgba(90,70,255,0.05)"/><circle cx="50" cy="10" r="0.5" fill="rgba(90,70,255,0.08)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+        opacity: 0.3;
+      }
+
+      /* 우주 이미지 슬라이더 */
+      .space-slider {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        z-index: 1;
+      }
+
+      .space-images {
+        display: flex;
+        width: 300%;
+        height: 100%;
+        animation: slideSpace 30s linear infinite;
+      }
+
+      .space-image {
+        width: 33.333%;
+        height: 100%;
+        background-size: cover;
+        background-position: center;
+        opacity: 0.4;
+        filter: brightness(0.7) contrast(1.2);
+      }
+
+      .space-image:nth-child(1) {
+        background-image: url("spaceship_main.png");
+      }
+
+      .space-image:nth-child(2) {
+        background-image: url("spaceship_blackhole.png");
+      }
+
+      .space-image:nth-child(3) {
+        background-image: url("spaceship_wrong.png");
+      }
+
+      @keyframes slideSpace {
+        0% {
+          transform: translateX(0);
+        }
+        100% {
+          transform: translateX(-33.333%);
+        }
+      }
+
+      .banner-content {
+        position: relative;
+        z-index: 2;
+        max-width: 100%;
+        margin: 0 auto;
+        text-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+      }
+
+      .banner-title {
+        font-size: 4.5rem;
+        font-weight: 700;
+        margin-bottom: 20px;
+        letter-spacing: 0.05em;
+        background: linear-gradient(90deg, #5a46ff, #ff6b9d);
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-shadow: 0 0 20px rgba(90, 70, 255, 0.5);
+      }
+
+      .banner-subtitle {
+        font-size: 1.4rem;
+        opacity: 0.9;
+        margin-bottom: 40px;
+        font-weight: 300;
+        color: #a0a0ff;
+      }
+
+      .cta-button {
+        display: inline-block;
+        background: linear-gradient(90deg, #5a46ff, #ff6b9d);
+        color: white;
+        padding: 15px 35px;
+        border-radius: 30px;
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 1rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        transition: all 0.3s ease;
+        border: none;
+        cursor: pointer;
+        box-shadow: 0 0 20px rgba(90, 70, 255, 0.5);
+        position: relative;
+        z-index: 2;
+      }
+
+      .cta-button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(90, 70, 255, 0.7);
+      }
+
+      /* 메인 컨텐츠 */
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 80px 40px;
+      }
+
+      /* 아티클 섹션 */
+      article {
+        background: rgba(15, 15, 30, 0.7);
+        border-radius: 15px;
+        padding: 40px;
+        margin-bottom: 60px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        border: 1px solid rgba(90, 70, 255, 0.3);
+      }
+
+      article h2 {
+        color: #5a46ff;
+        font-size: 2.2rem;
+        margin-bottom: 20px;
+        text-shadow: 0 0 10px rgba(90, 70, 255, 0.5);
+      }
+
+      article p {
+        color: #e0e0ff;
+        line-height: 1.8;
+        margin-bottom: 15px;
+      }
+
+      /* 사이드바 */
+      aside {
+        background: rgba(15, 15, 30, 0.7);
+        border-radius: 15px;
+        padding: 30px;
+        margin-bottom: 60px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        border: 1px solid rgba(90, 70, 255, 0.3);
+      }
+
+      aside h3 {
+        color: #ff6b9d;
+        font-size: 1.8rem;
+        margin-bottom: 20px;
+        text-shadow: 0 0 10px rgba(255, 107, 157, 0.5);
+      }
+
+      aside ul {
+        list-style: none;
+      }
+
+      aside li {
+        margin-bottom: 15px;
+        padding-left: 20px;
+        position: relative;
+      }
+
+      aside li:before {
+        content: "🚀";
+        position: absolute;
+        left: 0;
+      }
+
+      aside a {
+        color: #a0a0ff;
+        text-decoration: none;
+        transition: color 0.3s ease;
+      }
+
+      aside a:hover {
+        color: #5a46ff;
+      }
+
+      /* 라이프 스토리 섹션 */
+      .life-story {
+        margin-bottom: 100px;
+      }
+
+      .section-header {
+        text-align: center;
+        margin-bottom: 60px;
+      }
+
+      .section-title {
+        font-size: 2.8rem;
+        font-weight: 700;
+        color: #5a46ff;
+        margin-bottom: 15px;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        text-shadow: 0 0 15px rgba(90, 70, 255, 0.5);
+      }
+
+      .section-subtitle {
+        font-size: 1.2rem;
+        color: #a0a0ff;
+        font-weight: 300;
+      }
+
+      /* 이미지 그리드 - 교차 배치 */
+      .images-container {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 30px;
+        margin-bottom: 60px;
+      }
+
+      .image-item {
+        background: rgba(20, 20, 40, 0.7);
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        cursor: pointer;
+        transition: all 0.4s ease;
+        position: relative;
+        border: 1px solid rgba(90, 70, 255, 0.3);
+      }
+
+      .image-item:hover {
+        transform: translateY(-10px) scale(1.02);
+        box-shadow: 0 20px 40px rgba(90, 70, 255, 0.3);
+        border-color: rgba(90, 70, 255, 0.7);
+      }
+
+      .image-item.active {
+        transform: translateY(-10px) scale(1.02);
+        box-shadow: 0 20px 40px rgba(90, 70, 255, 0.5);
+        border: 2px solid #5a46ff;
+      }
+
+      .image-placeholder {
+        height: 200px;
+        background: linear-gradient(135deg, #1a1a3a 0%, #2a2a5a 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .image-placeholder::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(90,70,255,0.3)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+      }
+
+      .image-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(90, 70, 255, 0.8);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+
+      .image-item:hover .image-overlay {
+        opacity: 1;
+      }
+
+      .image-text {
+        color: white;
+        text-align: center;
+      }
+
+      .image-year {
+        font-size: 1.8rem;
+        font-weight: 600;
+        margin-bottom: 5px;
+        text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+      }
+
+      .image-title {
+        font-size: 1.1rem;
+        font-weight: 300;
+      }
+
+      .image-info {
+        padding: 20px;
+        text-align: center;
+      }
+
+      .image-info h3 {
+        font-size: 1.3rem;
+        font-weight: 500;
+        color: #5a46ff;
+        margin-bottom: 8px;
+      }
+
+      .image-info p {
+        color: #a0a0ff;
+        font-size: 0.95rem;
+      }
+
+      /* 상세 설명 패널 */
+      .detail-panel {
+        background: rgba(20, 20, 40, 0.8);
+        border-radius: 15px;
+        padding: 40px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        display: none;
+        animation: fadeInUp 0.5s ease;
+        border-left: 4px solid #5a46ff;
+        backdrop-filter: blur(10px);
+        margin-top: 30px;
+      }
+
+      .detail-panel.active {
+        display: block;
+      }
+
+      .detail-panel h3 {
+        font-size: 2.2rem;
+        color: #5a46ff;
+        margin-bottom: 20px;
+        font-weight: 600;
+        text-shadow: 0 0 10px rgba(90, 70, 255, 0.5);
+      }
+
+      .detail-panel .year-badge {
+        display: inline-block;
+        background: linear-gradient(90deg, #5a46ff, #ff6b9d);
+        color: white;
+        padding: 5px 15px;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        font-weight: 500;
+        margin-bottom: 20px;
+        box-shadow: 0 0 10px rgba(90, 70, 255, 0.5);
+      }
+
+      .detail-panel p {
+        color: #e0e0ff;
+        line-height: 1.8;
+        margin-bottom: 20px;
+        font-size: 1.05rem;
+      }
+
+      .detail-panel p:last-child {
+        margin-bottom: 0;
+      }
+
+      /* 추천 섹션 */
+      .recommendations {
+        background: rgba(10, 10, 22, 0.8);
+        padding: 100px 0;
+        margin-top: 100px;
+        border-top: 1px solid rgba(90, 70, 255, 0.3);
+        border-bottom: 1px solid rgba(90, 70, 255, 0.3);
+      }
+
+      .recommendations .container {
+        padding: 0 40px;
+      }
+
+      .rec-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 40px;
+        margin-top: 50px;
+      }
+
+      .rec-item {
+        background: rgba(20, 20, 40, 0.7);
+        border-radius: 15px;
+        padding: 30px;
+        text-align: center;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+        transition: transform 0.3s ease;
+        border: 1px solid rgba(90, 70, 255, 0.3);
+        backdrop-filter: blur(10px);
+      }
+
+      .rec-item:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(90, 70, 255, 0.3);
+        border-color: rgba(90, 70, 255, 0.7);
+      }
+
+      .rec-icon {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, #5a46ff, #ff6b9d);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px;
+        font-size: 2rem;
+        box-shadow: 0 0 20px rgba(90, 70, 255, 0.5);
+      }
+
+      .rec-item h4 {
+        font-size: 1.4rem;
+        color: #5a46ff;
+        margin-bottom: 15px;
+        font-weight: 600;
+        text-shadow: 0 0 10px rgba(90, 70, 255, 0.5);
+      }
+
+      .rec-item p {
+        color: #a0a0ff;
+        line-height: 1.6;
+      }
+
+      /* 새로운 iframe 섹션 */
+      .iframe-section {
+        background: rgba(10, 10, 22, 0.8);
+        padding: 100px 0;
+        border-top: 1px solid rgba(90, 70, 255, 0.3);
+        border-bottom: 1px solid rgba(90, 70, 255, 0.3);
+      }
+
+      .iframe-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 40px;
+      }
+
+      .iframe-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 30px;
+        margin-top: 50px;
+      }
+
+      .iframe-item {
+        background: rgba(20, 20, 40, 0.7);
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        border: 1px solid rgba(90, 70, 255, 0.3);
+        transition: transform 0.3s ease;
+      }
+
+      .iframe-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 40px rgba(90, 70, 255, 0.3);
+      }
+
+      .iframe-title {
+        padding: 20px;
+        text-align: center;
+        background: rgba(90, 70, 255, 0.2);
+        border-bottom: 1px solid rgba(90, 70, 255, 0.3);
+      }
+
+      .iframe-title h4 {
+        color: #5a46ff;
+        font-size: 1.2rem;
+        margin: 0;
+        font-weight: 600;
+      }
+
+      .iframe-content {
+        height: 300px;
+        overflow: hidden;
+      }
+
+      .iframe-content iframe {
+        width: 100%;
+        height: 100%;
+        border: none;
+      }
+
+      /* 푸터 */
+      .footer {
+        background: #050510;
+        color: white;
+        padding: 60px 0 40px;
+        text-align: center;
+        border-top: 1px solid rgba(90, 70, 255, 0.3);
+      }
+
+      .footer-logo {
+        font-size: 3rem;
+        font-weight: 700;
+        margin-bottom: 30px;
+        background: linear-gradient(90deg, #5a46ff, #ff6b9d);
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-shadow: 0 0 20px rgba(90, 70, 255, 0.5);
+      }
+
+      .footer-content {
+        max-width: 600px;
+        margin: 0 auto;
+      }
+
+      .footer-section {
+        margin-bottom: 25px;
+      }
+
+      .footer-section h4 {
+        color: #5a46ff;
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin-bottom: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        text-shadow: 0 0 10px rgba(90, 70, 255, 0.5);
+      }
+
+      .footer-section p {
+        color: #a0a0ff;
+        font-size: 0.95rem;
+      }
+
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @media (max-width: 1024px) {
+        .images-container {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        .portrait {
+          width: 100px;
+          height: 100px;
+          font-size: 2rem;
+        }
+
+        .banner-title {
+          font-size: 3.5rem;
+        }
+
+        .iframe-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+
+      @media (max-width: 768px) {
+        .header h1 {
+          font-size: 1.4rem;
+        }
+
+        .banner-title {
+          font-size: 2.8rem;
+        }
+
+        .images-container {
+          grid-template-columns: 1fr;
+        }
+
+        .rec-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .iframe-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .container {
+          padding: 60px 20px;
+        }
+
+        .main-banner {
+          padding: 120px 20px;
+          height: 80vh;
+        }
+
+        .portrait {
+          width: 80px;
+          height: 80px;
+          font-size: 1.8rem;
+          margin: 0 20px;
+        }
+
+        .space-images {
+          animation-duration: 40s;
+        }
+
+        .nav-menu {
+          flex-direction: column;
+          gap: 15px;
+        }
+      }
+    </style>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- 별 배경 -->
+    <div class="stars" id="stars"></div>
+
+    <!-- 초상화 배경 애니메이션 -->
+    <div class="portrait-background" id="portraitBackground"></div>
+
+    <header class="header">
+      <div class="header-content">
+        <h1>AI소프트웨어학과 2022320039 정하경</h1>
+      </div>
+    </header>
+
+    <!-- 네비게이션 -->
+    <nav>
+      <div class="nav-container">
+        <ul class="nav-menu">
+          <li><a href="#container">소개</a></li>
+          <li><a href="#journey">여정</a></li>
+          <li><a href="#research">연구</a></li>
+          <li><a href="#vision">비전</a></li>
+          <li><a href="#contact">연락처</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <section class="main-banner">
+      <div class="banner-bg"></div>
+
+      <!-- 우주 이미지 슬라이더 -->
+      <div class="space-slider">
+        <div class="space-images">
+          <div class="space-image"></div>
+          <div class="space-image"></div>
+          <div class="space-image"></div>
+        </div>
+      </div>
+
+      <div class="banner-content">
+        <h1 class="banner-title">붉은 별의 물리학자</h1>
+        <p class="banner-subtitle">
+          이 설정은 '프로젝트 헤일메리'의 탐사, '보이저'의 기록, 그리고
+          '인터스텔라'의 설정을 모두 아우르면서도, 인류의 능동적인 노력이 외계
+          문명과의 접촉을 이끌어낸다는 새로운 서사를 창조합니다.<br />
+          '프로젝트 헤일메리'를 재미있게 읽고 나서 인용하며 새로운 소설을 구성해
+          보았습니다.
+        </p>
+        <button class="cta-button">Story 시작하기</button>
+      </div>
+    </section>
+
+    <div class="container" id="container">
+      <!-- 메인 아티클 섹션 -->
+      <article id="about">
+        <h2>새로운 거처를 찾기 위한 여정 : '시간의 역설자들'</h2>
+        <img
+          src="증명사진.jpg"
+          alt="Spaceship"
+          style="
+            width: 200px;
+            display: block;
+            margin: 10px auto;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+          "
+        />
+        <p>
+          제일 최근에 찍은 깔끔한 사진이 증명사진 뿐이고, 증명사진이 군대에 있을
+          때 찍은 것 뿐이라 부득이 하게 해당 사진을 사용하게 되었습니다.
+        </p>
+        <p>
+          저는 평소에도 우주에 관심을 많이 가지고 있었습니다. 또한, 비교적
+          최근에 앤디위어 작가의 '프로젝트 헤일메리' 라는 책을 읽었습니다.<br />
+          그리고 해당 책의 내용을 이번 과제에 접목시켜서 새로운 이야기를 만들어
+          나가는 것도 재밌겠다 생각하게 되었습니다.<br />그래서 '프로젝트
+          헤일메리' 뿐 아니라 '인터스텔라' 와 인류가 만든 물체중 최초로 성간에
+          진입한 보이저 1호의 골든 레코드도 접목시켜 보았습니다. <br />최대한
+          표절이 아닌 인용을 하려 했지만 부족한 점이 많은 점 양해 부탁드립니다.
+        </p>
+        <p>
+          해당 내용을 간단하게 요약하면 아래와 같습니다.<br />
+          정하경은 태양 쇠퇴라는 절망적 위기 앞에서
+          <span class="annotation"><a href="#recommendations">'인류학적 시간 역설'</a></span> 을 끊기 위해,<br />
+          동료들과 함께 <span class="annotation"><a href="#recommendations">스태빌리티 드라이브</a></span> 를 이용해 웜홀 너머 <span class="annotation"><a href="#recommendations">프록시마 b</a></span> 로 향합니다. 
+          <br />목표 행성에서의 좌절 후, 
+          우연히 발견한 외계 기록
+          <span class="annotation"><a href="#recommendations">'하르모니움'</a></span> 을 해독하여 에이도스
+          문명과 접촉하고,<br />
+          그들의 도움으로 인류가 영원히 정착할 수 있는
+          <span class="annotation"><a href="#recommendations">'뉴 에덴'</a></span> 을 찾아냅니다. <br />이는
+          희생을 멈추고 공존을 선택함으로써 인류의 운명을 구원한, 네 명의
+          선구자에 대한 기록입니다.
+        </p>
+        <p>
+          <span style="color: red;">여기서 나오는 모든 사진들은 원본사진을 이용해서 AI로 변형하거나 아니면 처음부터 AI로 창작한 이미지들입니다.</span>
+        </p>
+      </article>
+
+      <section class="life-story" id="journey">
+        <div class="section-header">
+          <h2 class="section-title">Life Journey</h2>
+          <p class="section-subtitle">각 시기별 중요한 순간들을 담은 이야기</p>
+        </div>
+
+        <div class="images-container">
+          <div class="image-item" data-target="childhood">
+            <div class="image-placeholder">
+              <div class="image-overlay">
+                <div class="image-text">
+                  <div class="image-year">1998-2005</div>
+                  <div class="image-title">어린 시절</div>
+                </div>
+              </div>
+            </div>
+            <div class="image-info">
+              <h3>호기심의 시작</h3>
+              <p>별을 처음 발견한 순간</p>
+            </div>
+          </div>
+
+          <div class="image-item" data-target="elementary">
+            <div class="image-placeholder">
+              <div class="image-overlay">
+                <div class="image-text">
+                  <div class="image-year">2006-2011</div>
+                  <div class="image-title">초등학교</div>
+                </div>
+              </div>
+            </div>
+            <div class="image-info">
+              <h3>과학의 발견</h3>
+              <p>첫 번째 과학 실험</p>
+            </div>
+          </div>
+
+          <div class="image-item" data-target="middle">
+            <div class="image-placeholder">
+              <div class="image-overlay">
+                <div class="image-text">
+                  <div class="image-year">2012-2014</div>
+                  <div class="image-title">중학교</div>
+                </div>
+              </div>
+            </div>
+            <div class="image-info">
+              <h3>수학과 물리</h3>
+              <p>논리적 사고의 발달</p>
+            </div>
+          </div>
+
+          <div class="image-item" data-target="high">
+            <div class="image-placeholder">
+              <div class="image-overlay">
+                <div class="image-text">
+                  <div class="image-year">2015-2017</div>
+                  <div class="image-title">고등학교</div>
+                </div>
+              </div>
+            </div>
+            <div class="image-info">
+              <h3>진로의 결정</h3>
+              <p>AI와 물리학의 만남</p>
+            </div>
+          </div>
+
+          <div class="image-item" data-target="university">
+            <div class="image-placeholder">
+              <div class="image-overlay">
+                <div class="image-text">
+                  <div class="image-year">2022-현재</div>
+                  <div class="image-title">대학교</div>
+                </div>
+              </div>
+            </div>
+            <div class="image-info">
+              <h3>전문성 구축</h3>
+              <p>AI소프트웨어학과 입학</p>
+            </div>
+          </div>
+
+          <div class="image-item" data-target="future">
+            <div class="image-placeholder">
+              <div class="image-overlay">
+                <div class="image-text">
+                  <div class="image-year">미래</div>
+                  <div class="image-title">연구자의 꿈</div>
+                </div>
+              </div>
+            </div>
+            <div class="image-info">
+              <h3>우주 탐험</h3>
+              <p>AI 물리학자로서의 비전</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 상세 설명 패널들 -->
+        <div id="detail-childhood" class="detail-panel">
+          <p><br><br><br></p>
+          <span class="year-badge">1998-2005</span>
+          <h3>어린 시절: 별을 처음 발견한 날</h3>
+          <p>
+            5살 생일날, 할아버지가 선물해주신 작은 망원경으로 처음 본 달의 표면.
+            그날 밤 창가에서 본 수많은 별들이 내 인생을 바꿔놓았다. 어린
+            마음에도 우주의 광활함과 신비로움이 깊이 새겨졌고, 그때부터 나는
+            밤하늘을 관찰하는 아이가 되었다.
+          </p>
+          <p>
+            매일 밤 하늘을 올려다보며 별자리를 외우고, 도서관에서 우주에 관한
+            책들을 찾아 읽었다. 부모님은 내가 "우주 박사"가 될 거라고 농담처럼
+            말씀하셨지만, 그 말이 나에게는 진짜 꿈이 되었다.
+          </p>
+        </div>
+
+        <div id="detail-elementary" class="detail-panel">
+          <p><br><br><br></p>
+          <span class="year-badge">2006-2011</span>
+          <h3>초등학교: 과학의 발견</h3>
+          <p>
+            초등학교 3학년 과학 시간에 처음으로 현미경을 만져보았다. 양파 껍질
+            세포를 관찰하며 눈에 보이지 않는 작은 세계가 있다는 것을 알게
+            되었고, 이것이 나의 첫 번째 과학적 경험이었다.
+          </p>
+          <p>
+            과학 상자를 가지고 집에서 매일 실험을 했다. 간단한 화학 반응부터
+            자석의 성질까지, 모든 것이 신기하고 재미있었다. 그때부터 "왜?"라는
+            질문을 끊임없이 하는 아이가 되었다.
+          </p>
+        </div>
+
+        <div id="detail-middle" class="detail-panel">
+          <p><br><br><br></p>
+          <span class="year-badge">2012-2014</span>
+          <h3>중학교: 수학과 물리의 만남</h3>
+          <p>
+            중학교 2학년 때 처음 배운 물리 법칙들이 수학으로 표현될 수 있다는
+            것에 놀랐다. 특히 뉴턴의 운동 법칙을 배우며 우주의 모든 움직임이
+            수학적으로 설명될 수 있다는 것을 깨달았다.
+          </p>
+          <p>
+            밤마다 수학 문제를 풀면서도 이 공식들이 실제 우주에서 어떻게
+            작동하는지 상상했다. 행성의 공전, 위성의 궤도, 모든 것이 수학의
+            아름다운 질서 안에 있다는 것이 경이로웠다.
+          </p>
+        </div>
+
+        <div id="detail-high" class="detail-panel">
+          <p><br><br><br></p>
+          <span class="year-badge">2015-2017</span>
+          <h3>고등학교: AI와 물리학의 융합</h3>
+          <p>
+            고등학교 시절 알파고와 이세돌의 바둑 대국을 보며 인공지능의 가능성에
+            눈을 떴다. 동시에 물리학 올림피아드에 참가하면서 현대 물리학이
+            얼마나 복잡하고 데이터 집약적인 학문인지 깨달았다.
+          </p>
+          <p>
+            그때 생각했다. "AI가 바둑을 정복했다면, 우주의 비밀도 풀 수 있지
+            않을까?" 이 질문이 내 진로를 결정하는 순간이었다. AI와 물리학을
+            결합한 새로운 분야에서 일하고 싶다는 꿈을 품게 되었다.
+          </p>
+        </div>
+
+        <div id="detail-university" class="detail-panel">
+          <p><br><br><br></p>
+          <span class="year-badge">2022-현재</span>
+          <h3>대학교: 전문성의 시작</h3>
+          <p>
+            AI소프트웨어학과에 입학하면서 본격적으로 머신러닝과 딥러닝을 배우기
+            시작했다. Python으로 첫 신경망을 구현했을 때의 감동을 잊을 수 없다.
+            컴퓨터가 스스로 학습한다는 개념이 얼마나 혁신적인지 실감했다.
+          </p>
+          <p>
+            현재는 AI를 활용한 천체물리학 연구에 관심을 가지고 관련 프로젝트를
+            진행 중이다. 특히 적색거성의 진화 과정을 예측하는 AI 모델 개발에
+            집중하고 있다.
+          </p>
+        </div>
+
+        <div id="detail-future" class="detail-panel">
+          <p><br><br><br></p>
+          <span class="year-badge">미래</span>
+          <h3>연구자의 꿈: 우주를 이해하는 AI</h3>
+          <p>
+            미래에는 AI 물리학자로서 우주의 근본적인 질문들에 답하고 싶다.
+            암흑물질과 암흑에너지의 정체, 블랙홀의 정보 역설, 우주의 최종 운명과
+            같은 문제들을 AI의 도움으로 풀어나가고 싶다.
+          </p>
+          <p>
+            더 나아가 AI가 새로운 물리 법칙을 발견할 수 있도록 하는 방법론을
+            개발하는 것이 궁극적인 목표이다. 인간의 직관과 AI의 계산 능력이
+            만나면 우주의 비밀을 더 빨리 풀 수 있을 것이라고 믿는다.
+          </p>
+        </div>
+      </section>
+
+      <!-- 사이드바 -->
+      <aside>
+        <h3>관련 링크</h3>
+        <ul>
+          <li><a href="#">AI 천체물리학 연구소</a></li>
+          <li><a href="#">우주 데이터 공유 플랫폼</a></li>
+          <li><a href="#">AI 물리학 저널</a></li>
+          <li><a href="#">우주 탐사 프로젝트</a></li>
+          <li><a href="#">학술 컨퍼런스 일정</a></li>
+        </ul>
+      </aside>
+    </div>
+
+    <!-- 추천 섹션 -->
+    <section class="recommendations" id="recommendations">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">새로운 용어</h2>
+          <p class="section-subtitle">
+            AI와 우주에 관심이 있다면 꼭 알아야 할 내용들
+          </p>
+        </div>
+
+        <div class="rec-grid">
+          <div class="rec-item">
+            <div class="rec-icon">📚</div>
+            <h4>추천 도서</h4>
+            <p>AI와 우주물리학을 이해하는 데 도움이 되는 필독서 목록</p>
+          </div>
+
+          <div class="rec-item">
+            <div class="rec-icon">🔬</div>
+            <h4>연구 자료</h4>
+            <p>최신 AI 천체물리학 연구 논문과 자료 모음</p>
+          </div>
+
+          <div class="rec-item">
+            <div class="rec-icon">🌌</div>
+            <h4>우주 탐사</h4>
+            <p>NASA와 ESA의 최신 우주 탐사 프로젝트 소개</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 새로운 iframe 섹션 -->
+    <section class="iframe-section" id="links">
+      <div class="iframe-container">
+        <div class="section-header">
+          <h2 class="section-title">관련 자료</h2>
+          <p class="section-subtitle">우주 탐사와 AI 연구에 관한 유용한 정보들</p>
+        </div>
+
+        <div class="iframe-grid">
+          <div class="iframe-item">
+            <div class="iframe-title">
+              <h4>NASA 우주 탐사</h4>
+            </div>
+            <div class="iframe-content">
+              <iframe src="Google_Gemini.pdf" 
+                      title="NASA 우주 탐사 정보"></iframe>
+            </div>
+          </div>
+
+          <div class="iframe-item">
+            <div class="iframe-title">
+              <h4>AI 물리학 연구</h4>
+            </div>
+            <div class="iframe-content">
+              <iframe src="https://deepmind.google/discover/blog/" 
+                      title="AI 물리학 연구 정보"></iframe>
+            </div>
+          </div>
+
+          <div class="iframe-item">
+            <div class="iframe-title">
+              <h4>우주 과학 뉴스</h4>
+            </div>
+            <div class="iframe-content">
+              <iframe src="https://www.space.com/news" 
+                      title="우주 과학 뉴스"></iframe>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="footer-content">
+        <div class="footer-logo">정하경</div>
+        <div class="footer-section">
+          <h4>AI소프트웨어학과</h4>
+          <p>우주와 기술을 연결하는 혁신적인 연구</p>
+        </div>
+        <div class="footer-section">
+          <h4>연락처</h4>
+          <p>이메일: hakyung@university.ac.kr</p>
+        </div>
+        <div class="footer-section">
+          <h4>AI 대화내용 보기</h4>
+          <p><a href="https://g.co/gemini/share/60454fe54105">Google_Gemini</a></p>
+          <p><a href="https://claude.ai/share/6301a2d9-506a-4247-b825-487ddbf4c69f">CLAUDE</a></p>
+          <p><a href="https://chat.deepseek.com/share/u7idmtf1tz1vc96fea">DEEPSEEK(1)</a></p>
+          <p><a href="https://chat.deepseek.com/share/j1yaswvenoifeanwj8">DEEPSEEK(2)</a></p>
+        </div>
+        <div class="footer-section">
+          <p>&copy; 2023 정하경. 모든 권리 보유.</p>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // 별 배경 생성
+      function createStars() {
+        const starsContainer = document.getElementById("stars");
+        const starCount = 200;
+
+        for (let i = 0; i < starCount; i++) {
+          const star = document.createElement("div");
+          star.classList.add("star");
+
+          // 랜덤 위치와 크기 설정
+          const size = Math.random() * 3;
+          star.style.width = `${size}px`;
+          star.style.height = `${size}px`;
+          star.style.left = `${Math.random() * 100}%`;
+          star.style.top = `${Math.random() * 100}%`;
+
+          // 랜덤 애니메이션 지연
+          star.style.animationDelay = `${Math.random() * 5}s`;
+
+          starsContainer.appendChild(star);
+        }
+      }
+
+      // 초상화 배경 생성 - 수정됨
+      function createPortraitBackground() {
+        const container = document.getElementById("portraitBackground");
+        const portraitIcons = [
+          "🌌", "🚀", "🛰️", "🔭", "🌠", "⭐", "🌟", "💫", "☄️", "🪐"
+        ];
+        
+        // 여러 행 생성
+        for (let i = 0; i < 8; i++) {
+          const row = document.createElement("div");
+          row.classList.add("portrait-row");
+          
+          // 각 행에 여러 초상화 추가
+          for (let j = 0; j < 20; j++) {
+            const portrait = document.createElement("div");
+            portrait.classList.add("portrait");
+            
+            // 랜덤 아이콘 선택
+            const randomIcon = portraitIcons[Math.floor(Math.random() * portraitIcons.length)];
+            portrait.textContent = randomIcon;
+            
+            // 랜덤 애니메이션 지연
+            portrait.style.animationDelay = `${Math.random() * 5}s`;
+            
+            row.appendChild(portrait);
+          }
+          
+          container.appendChild(row);
+        }
+      }
+
+      // 이미지 아이템 클릭 이벤트 처리
+      function setupImageInteractions() {
+        const imageItems = document.querySelectorAll(".image-item");
+        const detailPanels = document.querySelectorAll(".detail-panel");
+
+        imageItems.forEach((item) => {
+          item.addEventListener("click", function () {
+            const targetId = this.getAttribute("data-target");
+
+            // 모든 패널 숨기기
+            detailPanels.forEach((panel) => {
+              panel.classList.remove("active");
+            });
+
+            // 모든 이미지 아이템 비활성화
+            imageItems.forEach((imgItem) => {
+              imgItem.classList.remove("active");
+            });
+
+            // 해당 패널 표시
+            const targetPanel = document.getElementById(`detail-${targetId}`);
+            if (targetPanel) {
+              targetPanel.classList.add("active");
+              this.classList.add("active");
+
+              // 부드러운 스크롤
+              targetPanel.scrollIntoView({
+                behavior: "smooth",
+                block: "start",
+              });
+            }
+          });
+        });
+      }
+
+      // CTA 버튼 클릭 이벤트
+      function setupCTAButton() {
+        const ctaButton = document.querySelector(".cta-button");
+        ctaButton.addEventListener("click", function () {
+          document.querySelector("#container").scrollIntoView({
+            behavior: "smooth",
+          });
+        });
+      }
+
+      // 페이지 로드 시 초기화
+      window.addEventListener("DOMContentLoaded", function () {
+        createStars();
+        createPortraitBackground();
+        setupImageInteractions();
+        setupCTAButton();
+
+        // 첫 번째 패널 활성화
+        const firstPanel = document.querySelector(".detail-panel");
+        if (firstPanel) {
+          firstPanel.classList.add("active");
+        }
+
+        const firstImage = document.querySelector(".image-item");
+        if (firstImage) {
+          firstImage.classList.add("active");
+        }
+      });
+    </script>
+  </body>
+</html>
