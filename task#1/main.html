@@ -739,64 +739,127 @@
         line-height: 1.6;
       }
 
-      /* 새로운 iframe 섹션 */
-      .iframe-section {
+      /* 자료 보관함 섹션 */
+      .resources-section {
         background: rgba(10, 10, 22, 0.8);
         padding: 100px 0;
         border-top: 1px solid rgba(90, 70, 255, 0.3);
         border-bottom: 1px solid rgba(90, 70, 255, 0.3);
       }
 
-      .iframe-container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 0 40px;
-      }
-
-      .iframe-grid {
+      .resources-grid {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        gap: 30px;
+        gap: 40px;
         margin-top: 50px;
       }
 
-      .iframe-item {
+      .resource-item {
         background: rgba(20, 20, 40, 0.7);
         border-radius: 15px;
-        overflow: hidden;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        padding: 30px;
+        text-align: center;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+        transition: transform 0.3s ease;
         border: 1px solid rgba(90, 70, 255, 0.3);
+        backdrop-filter: blur(10px);
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .resource-item:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(90, 70, 255, 0.3);
+        border-color: rgba(90, 70, 255, 0.7);
+      }
+
+      .resource-icon {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, #5a46ff, #ff6b9d);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto;
+        font-size: 2rem;
+        box-shadow: 0 0 20px rgba(90, 70, 255, 0.5);
+      }
+
+      .resource-item h4 {
+        font-size: 1.4rem;
+        color: #5a46ff;
+        font-weight: 600;
+        text-shadow: 0 0 10px rgba(90, 70, 255, 0.5);
+        margin: 0;
+      }
+
+      .resource-preview {
+        width: 100%;
+        height: 200px;
+        border-radius: 10px;
+        overflow: hidden;
+        background: rgba(10, 10, 22, 0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .resource-preview img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
         transition: transform 0.3s ease;
       }
 
-      .iframe-item:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 15px 40px rgba(90, 70, 255, 0.3);
+      .resource-item:hover .resource-preview img {
+        transform: scale(1.1);
       }
 
-      .iframe-title {
+      .pdf-preview, .link-preview {
+        flex-direction: column;
         padding: 20px;
-        text-align: center;
-        background: rgba(90, 70, 255, 0.2);
-        border-bottom: 1px solid rgba(90, 70, 255, 0.3);
       }
 
-      .iframe-title h4 {
-        color: #5a46ff;
-        font-size: 1.2rem;
-        margin: 0;
-        font-weight: 600;
+      .pdf-preview p, .link-preview p {
+        color: #a0a0ff;
+        margin: 5px 0;
       }
 
-      .iframe-content {
-        height: 300px;
-        overflow: hidden;
+      .file-info {
+        font-size: 0.9rem;
+        color: #ff6b9d !important;
+        font-weight: 500;
       }
 
-      .iframe-content iframe {
-        width: 100%;
-        height: 100%;
-        border: none;
+      .download-btn {
+        display: inline-block;
+        background: linear-gradient(90deg, #5a46ff, #ff6b9d);
+        color: white;
+        padding: 12px 30px;
+        border-radius: 25px;
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        box-shadow: 0 0 15px rgba(90, 70, 255, 0.3);
+      }
+
+      .download-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 20px rgba(90, 70, 255, 0.5);
+      }
+
+      @media (max-width: 1024px) {
+        .resources-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+
+      @media (max-width: 768px) {
+        .resources-grid {
+          grid-template-columns: 1fr;
+        }
       }
 
       /* 푸터 */
@@ -1017,9 +1080,9 @@
         <ul class="nav-menu">
           <li><a href="#container">소개</a></li>
           <li><a href="#journey">여정</a></li>
-          <li><a href="#research">연구</a></li>
-          <li><a href="#vision">비전</a></li>
-          <li><a href="#contact">연락처</a></li>
+          <li><a href="#recommendations">새로운 용어</a></li>
+          <li><a href="#resources">자료 보관함</a></li>
+          <li><a href="#footer">연락처</a></li>
         </ul>
       </div>
     </nav>
@@ -1432,6 +1495,9 @@
               좌절의 심화: **프록시마 b**에서의 실패는 하경에게 자신이 역설을 해결하지 못하고 오히려 인류를 최후의 절망에 빠뜨렸다는 극심한 죄책감을 안겨줍니다.<br>  
               해결 및 완성: 에이도스 문명과의 공존을 통해 '뉴 에덴'을 찾는 것은 단순히 행성을 찾는 것을 넘어, 타자(他者)와의 협력을 통해 희생의 순환을 영원히 끊어낸다는 철학적 역설의 완벽한 해답이 됩니다.
             </p>
+            <p>
+              <img src="https://github.com/hakyaung/2025webprogramming/blob/main/task%231/image/anthropological_time_paradox.png?raw=true" width="50%">
+            </p>
           </div>
 
           <div id="rec-detail-research" class="rec-detail-panel">
@@ -1477,6 +1543,9 @@
               드라이브의 안정화 원리는 곧 혼돈 속에서 조화(Stability in Chaos)를 찾는 그의 철학 그 자체입니다. <br>
               실제 임무: 드라이브의 작동은 자동화되었으나, 웜홀 진입 직전에 발생하는 예측 불가능한 최종 난류 계산은 오직 하경의 이론과 판단에 의존했습니다. <br>
               웜홀 진입 직후 시스템이 마비된 것은 드라이브가 탐사선 전체의 동력을 희생하여 승무원들이 탑승한 핵심 선실만은 안전하게 보호했음을 의미합니다.
+            </p>
+            <p>
+              <img src="https://github.com/hakyaung/2025webprogramming/blob/main/task%231/image/spaceship_StabilityDrive.png?raw=true" width="50%">
             </p>
           </div>
 
@@ -1597,6 +1666,9 @@
             <p>
               하르모니움의 발견은 정하경 팀에게 과학적 희망뿐 아니라, 우주에 홀로 남겨졌다는 절망적인 생각에서 벗어나 '우리는 혼자가 아니다'라는 가장 근원적인 희망을 준 사건이었습니다.
             </p>
+            <p>
+              <img src="https://github.com/hakyaung/2025webprogramming/blob/main/task%231/image/Harmonium.png?raw=true" width="50%">
+            </p>
           </div>
 
           <div id="rec-detail-eidos" class="rec-detail-panel">
@@ -1653,6 +1725,9 @@
               <strong>공존의 가능성</strong>: 에이도스들은 인류에게 기술을 전수하는 대신, 인류가 데이터베이스를 활용하여 윤리적인 선택을 하도록 돕습니다. 
               이는 정하경의 '희생의 순환 고리를 끊는' 목표를 실현하는 데 결정적인 조력이 됩니다.
             </p>
+            <p>
+              <img src="https://github.com/hakyaung/2025webprogramming/blob/main/task%231/image/eidos.png?raw=true" width="50%">
+            </p>
           </div>
 
           <div id="rec-detail-eden" class="rec-detail-panel">
@@ -1706,52 +1781,59 @@
               <strong>공존의 시작</strong>: 뉴 에덴은 에이도스 문명의 영향을 받아 탄생한 **'하모니 위원회'**가 존재하는 곳입니다.<br>
               인류는 이곳에서 에이도스와의 교류를 통해 과학 기술뿐만 아니라 **'지성 간의 상호 존중'**이라는 새로운 윤리적 가치를 배우며, 진정한 우주적 공존의 시대를 열게 됩니다.
             </p>
+            <p>
+              <img src="https://github.com/hakyaung/2025webprogramming/blob/main/task%231/image/eden_2.png?raw=true" width="50%">
+            </p>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- 새로운 iframe 섹션 -->
-    <section class="iframe-section" id="links">
-      <div class="iframe-container">
+    <!-- 기존 iframe 섹션 삭제하고 아래 코드로 교체 -->
+    <section class="resources-section" id="resources">
+      <div class="container">
         <div class="section-header">
-          <h2 class="section-title">기반이 된 자료들</h2>
-          <p class="section-subtitle">여러가지 형태의 실제 자료</p>
+          <h2 class="section-title">자료 보관함</h2>
+          <p class="section-subtitle">프로젝트 관련 이미지와 문서 자료</p>
         </div>
 
-        <div class="iframe-grid">
-          <div class="iframe-item">
-            <div class="iframe-title">
-              <h4>우주선 스케치</h4>
+        <div class="resources-grid">
+          <!-- 이미지 갤러리 -->
+          <div class="resource-item">
+            <div class="resource-icon">🖼️</div>
+            <h4>우주선 스케치</h4>
+            <div class="resource-preview">
+              <img src="https://github.com/hakyaung/2025webprogramming/blob/main/task%231/image/sapceshipmymymy.png?raw=true" alt="우주선 스케치">
             </div>
-            <div class="iframe-content" style="background: url(https://github.com/hakyaung/2025webprogramming/blob/main/task%231/image/sapceshipmymymy.png?raw=true); background-size: contain;">
-            </div>
+            <a href="https://github.com/hakyaung/2025webprogramming/blob/main/task%231/image/sapceshipmymymy.png?raw=true" target="_blank" class="download-btn">이미지 보기</a>
           </div>
 
-          <div class="iframe-item">
-            <div class="iframe-title">
-              <h4>냉동인간에 대한 생각 pdf</h4>
+          <!-- PDF 다운로드 -->
+          <div class="resource-item">
+            <div class="resource-icon">📄</div>
+            <h4>냉동인간에 대한 생각</h4>
+            <div class="resource-preview pdf-preview">
+              <p>영어 기말 발표 자료</p>
+              <p class="file-info">PDF 문서</p>
             </div>
-            <div class="iframe-content">
-              <iframe src="c:\Users\정하경\Desktop\영어 기말 발표(영어).pdf" 
-                      title="AI 물리학 연구 정보"></iframe>
-            </div>
+            <a href="https://github.com/hakyaung/2025webprogramming/blob/main/task%231/%EC%98%81%EC%96%B4%20%EA%B8%B0%EB%A7%90%20%EB%B0%9C%ED%91%9C(%EC%98%81%EC%96%B4).pdf" download class="download-btn">PDF 다운로드</a>
           </div>
 
-          <div class="iframe-item">
-            <div class="iframe-title">
-              <h4>우주 과학 뉴스</h4>
+          <!-- 외부 링크 -->
+          <div class="resource-item">
+            <div class="resource-icon">📗</div>
+            <h4>프로젝트 헤일메리</h4>
+            <div class="resource-preview link-preview">
+              <p>앤디 위어 장편소설</p>
+              <p class="file-info">Book</p>
             </div>
-            <div class="iframe-content">
-              <iframe src="https://www.space.com/news" 
-                      title="우주 과학 뉴스"></iframe>
-            </div>
+            <a href="https://search.shopping.naver.com/book/catalog/48694890618?cat_id=50005754&frm=PBOKPRO&query=%ED%97%A4%EC%9D%BC%EB%A9%94%EB%A6%AC+%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8&NaPm=ct%3Dmg4ryt80%7Cci%3D4358e606673943ce24b4d2af184518f299bd3277%7Ctr%3Dboknx%7Csn%3D95694%7Chk%3D5bbd3c1c7d52f4bdecc99cf3a85b54b513cdb910" target="_blank" class="download-btn">사이트 방문</a>
           </div>
         </div>
       </div>
     </section>
 
-    <footer class="footer">
+    <footer class="footer" id="footer">
       <div class="footer-content">
         <div class="footer-logo">AI소프트웨어학과 2022320039 정하경</div>
         <div class="footer-section">
